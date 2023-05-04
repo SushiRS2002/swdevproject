@@ -52,8 +52,8 @@ exports.getReservation = async (req, res, next) => {
 //@access Private
 exports.addReservation = async (req, res, next) => {
     try {
-        req.body.provider = req.params.providersId;
-        const provider = await Provider.findById(req.params.providersId);
+        req.body.provider = req.params.providerId;
+        const provider = await Provider.findById(req.params.providerId);
         if(!provider) {
             res.status(404).json({success : false, message : `No provider with the id of ${req.params.id}`});
         }
@@ -118,7 +118,7 @@ exports.deleteReservation = async (req, res, next) => {
             res.status(401).json({success : false, message : `User ${req.user.id} is not authorized to delete this reservation`});
         }
 
-        await reservation.remove()
+        await reservation.remove();
         res.status(200).json({success : true, data : {}});
     } catch(error) {
         console.log(error.stack);

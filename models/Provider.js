@@ -46,12 +46,12 @@ const ProviderSchema = new mongoose.Schema({
 });
 
 //Reverse populate with virtuals
-/* HospitalSchema.virtual("appointments", {
-    ref : "Appointment",
+ProviderSchema.virtual("reservations", {
+    ref : "Reservation",
     localField : "_id",
-    foreignField : "hospital",
+    foreignField : "provider",
     justOne : false
-}); */
+});
 
 //Cascade delete appointments when a hospital is deleted
 /* HospitalSchema.pre("remove", async function(next) {
