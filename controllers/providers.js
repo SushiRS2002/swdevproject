@@ -5,13 +5,13 @@ const Provider = require("../models/Provider");
 //@access Public
 
 exports.getProviders = async (req, res, next) => {
-  /* let query;
+  let query;
 
   //req.query copying
-  const reqQuery = { ...req.query };
+  const reqQuery = {...req.query};
 
   //Excluded Fields
-  const removeFields = ["select", "sort", "page", "limit"];
+  const removeFields = ["select", "sort"];
 
   //Loop over remove fields and delete them for reqQuery
   removeFields.forEach((param) => delete reqQuery[param]);
@@ -21,13 +21,10 @@ exports.getProviders = async (req, res, next) => {
   let queryStr = JSON.stringify(reqQuery);
 
   //Regex operators creation
-  queryStr = queryStr.replace(
-    /\b(gt|gte|lt|lte|in)\b/g,
-    (match) => `$${match}`
-  );
+  queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g,(match) => `$${match}`);
 
   //Resource finding
-  query = Provider.find(JSON.parse(queryStr)).populate("appointments");
+  query = Provider.find(JSON.parse(queryStr)).populate("reservations");
 
   //Select fields
   if (req.query.select) {
@@ -43,14 +40,9 @@ exports.getProviders = async (req, res, next) => {
     query = query.sort("-createdAt");
   }
 
-  //Pagination
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 25;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
- */
   try {
-    const providers = await Provider.find();
+    const providers = await Provider.find(req.query);
+    console.log(req.query);
 
     res.status(200).json({
       success: true,
@@ -114,7 +106,7 @@ exports.deleteProvider = async (req, res, next) => {
         success: false,
       });
     }
-    //provider.remove();
+    provider.remove();
     res.status(200).json({ success: true, data: {} });
   } catch (err) {
     res.status(400).json({ success: false });

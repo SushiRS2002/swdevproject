@@ -47,8 +47,8 @@ exports.getReservation = async (req, res, next) => {
     }
 };
 
-//@desc Add reservation
-//@route GET /api/v1/providers/:providersId/reservation
+//@desc Create reservation
+//@route POST /api/v1/providers/:providerId/reservations
 //@access Private
 exports.addReservation = async (req, res, next) => {
     try {
@@ -118,7 +118,7 @@ exports.deleteReservation = async (req, res, next) => {
             res.status(401).json({success : false, message : `User ${req.user.id} is not authorized to delete this reservation`});
         }
 
-        await reservation.remove();
+        await Reservation.findByIdAndDelete(req.params.id);
         res.status(200).json({success : true, data : {}});
     } catch(error) {
         console.log(error.stack);

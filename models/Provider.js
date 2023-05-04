@@ -37,7 +37,7 @@ const ProviderSchema = new mongoose.Schema({
         required : [true, "Please add a car type"]
     },
     rentprice : {
-        type : Number,
+        type : String,
         required : [true, "Please add a rental price"]
     }
 }, {
@@ -53,11 +53,11 @@ ProviderSchema.virtual("reservations", {
     justOne : false
 });
 
-//Cascade delete appointments when a hospital is deleted
-/* HospitalSchema.pre("remove", async function(next) {
-    console.log(`Appointments being removed from hospital ${this._id}`);
-    await this.model("Appointment").deleteMany({hospital : this._id});
+//Cascade delete reservations when a provider is deleted
+ProviderSchema.pre("remove", async function(next) {
+    console.log(`Reservations being removed from provider ${this._id}`);
+    await this.model("Reservation").deleteMany({provider : this._id});
     next();
 });
- */
+
 module.exports = mongoose.model("Provider", ProviderSchema);
